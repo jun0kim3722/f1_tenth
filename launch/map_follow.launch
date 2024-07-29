@@ -1,0 +1,22 @@
+<launch>
+    <!-- Include the rallycar hardware launch file for setting up the LIDAR and other hardware nodes -->
+    <include file="$(find rallycar)/launch/rallycar_hardware.launch"/>
+
+    <!-- Launch the map server to publish the dudl hallway map -->
+    <include file="$(find rallycar)/launch/load_map.launch"/>
+    <include file="$(find rallycar)/launch/load_path.launch"/>
+    <include file="$(find rallycar)/launch/amcl.launch"/>
+
+    <!-- Define the static transform from map to laser_frame with correct formatting -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="laser_to_map" args="0 0 0 0 0 0 1 map laser" />
+
+    <!-- Launch RViz with a custom configuration -->
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rallycar)/resource/rviz_configs/map_follow.rviz" /> --> 
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find rallycar)/resource/rviz_configs/map_follow.rviz" /> 
+ 
+    <!-- Launch the display_waypoints.py script -->
+    <node name="waypoint_display" pkg="purdue_power_pistons_lab6" type="display_waypoints.py" output="screen" /> 
+    <!-- Launch the waypoint.py script -->
+    <node name="waypoint_saver" pkg="purdue_power_pistons_lab6" type="waypoint.py" output="screen" />
+</launch>
+
